@@ -12,7 +12,7 @@ import {
 	SecondaryButton,
    MainTitle,
    SubTitle
-} from '../stylesComp.js/LoginSign';
+} from '../stylesComp/LoginSign';
 
 const Login = () => {
 	return (
