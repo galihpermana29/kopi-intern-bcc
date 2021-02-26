@@ -23,7 +23,7 @@ const Login = () => {
 				</ImgWrapper>
 				<TextWrapper>
 					<MainTitle>Daftar</MainTitle>
-					<SubTitle>Silahkan mendatar untuk masuk</SubTitle>
+					<SubTitle>Silahkan mendaftar untuk masuk</SubTitle>
 					<form action="">
 						<Input type="text" name="name" label="Name" required/>
 						<Input type="text" name="address" label="Address" required/>

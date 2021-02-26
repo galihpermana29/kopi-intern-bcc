@@ -7,7 +7,7 @@ export const Container = styled.div`
 	width: 100%;
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	/* justify-content: center; */
 	/* border: 1px solid red; */
 	position: relative;
 `;
@@ -18,12 +18,14 @@ export const Wrapper = styled.div`
 	/* border: 5px solid green; */
 	flex-wrap: wrap;
 	position: relative;
+   min-height: 100vh;
+	width: 100%;
 	@media only screen and (min-width: 768px) {
 		display: flex;
 		flex-direction: row;
 		/* border: 5px solid green; */
-		justify-content: center;
-      align-items: center;
+		justify-content: space-between;
+      /* align-items: center; */
 		height: 100%;
       /* height: 100vh; */
 	}
@@ -31,14 +33,14 @@ export const Wrapper = styled.div`
 
 export const ImgWrapper = styled.div`
 	/* width: 100%; */
-	max-width: 100%;
+	width: 100%;
 	/* border: 5px solid yellow; */
 	position: relative;
 	@media only screen and (min-width: 768px) {
 		display: flex;
 		flex-direction: row;
 		/* border: 5px solid yellow; */
-		width: 50%;
+		width: 55%;
       /* height: 100%; */
       /* min-height: 100vh; */
 	}
@@ -46,11 +48,10 @@ export const ImgWrapper = styled.div`
 
 export const ImgLogin = styled.img`
 	width: 100%;
-	height: 50%;
+   object-fit: cover;
 	background-position: center;
 	@media only screen and (min-width: 768px) {
 		width: 100%;
-		height: 100%;
 	}
 `;
 
@@ -62,16 +63,17 @@ export const TextWrapper = styled.div`
 	/* left: 10px; */
 	right: 10px;
 	box-sizing: border-box;
-	padding: 1.5rem;
+	padding: 2rem;
 	margin: 0 1rem;
-	border-radius: 1rem;
+	border-radius: 1.5rem;
 	width: 100%;
 	@media only screen and (min-width: 768px) {
-		width: 40%;
+		width: 45%;
 		/* border: 5px solid green; */
 		position: static;
 		margin: inherit;
 		padding: 5rem;
+      align-self: center;
 	}
 `;
 
@@ -85,7 +87,7 @@ export const MainForm = styled.form`
 
 export const Input = styled(TextField).attrs(() => ({
 	variant: 'outlined',
-	InputProps: { style: { fontSize: '1.3rem', fontFamily: 'inherit' } },
+	InputProps: { style: { fontSize: '1.3rem', fontFamily: 'inherit', height: '50px' } },
 	InputLabelProps: { style: { fontSize: '1.5rem', fontFamily: 'inherit' } },
 }))`
 	width: 100%;
