@@ -28,7 +28,7 @@ body {
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
   font-size: 1.5rem;
-  color: #222;
+  color: #000;
   line-height: 1.6;
   /* background-image: linear-gradient(to right bottom,#022B3A,#1F7A8C); */
   background-color: white;

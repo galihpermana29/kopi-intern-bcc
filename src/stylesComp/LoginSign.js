@@ -65,7 +65,7 @@ export const TextWrapper = styled.div`
 	box-sizing: border-box;
 	padding: 2rem;
 	margin: 0 1rem;
-	border-radius: 1.5rem;
+	border-radius: 2rem;
 	width: 100%;
 	@media only screen and (min-width: 768px) {
 		width: 45%;
