@@ -1,7 +1,7 @@
 import { React, useState } from 'react';
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import logo from '../img/logo.png';
@@ -40,7 +40,7 @@ const NavbarLink = styled(Link)`
 	transition: 0.2s ease-in-out all;
 	/* border-radius: 0.3rem;  */
 	border-bottom: 2px solid #fff;
-   font-weight: 300;
+   font-weight: 400;
 	&:hover {
 		/* background-color: #ef962d; */
 		color: #ef962d;
@@ -96,12 +96,13 @@ const Navbar = () => {
 	};
 
 	const handleClose = () => {
+      <Redirect to="/login"/>
 		setAnchorEl(null);
 	};
 
 	return (
 		<div>
-			<NavbarWrapper1>
+			<NavbarWrapper1 elevation={0}>
 				<Toolbar>
 					<LogoImg src={logo} />
 					<NavbarWrapper2>

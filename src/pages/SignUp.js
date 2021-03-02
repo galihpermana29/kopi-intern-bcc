@@ -34,7 +34,7 @@ const Login = () => {
 							Daftar
 						</MainButton>
 					</form>
-					<SecondaryButton style={{ marginTop: '2rem' }} to="/Login">
+					<SecondaryButton style={{ marginTop: '2rem' }} to="/login">
 						Masuk
 					</SecondaryButton>
 				</TextWrapper>
