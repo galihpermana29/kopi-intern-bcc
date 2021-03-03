@@ -3,140 +3,128 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Navbar from '../stylesComp/Navbar';
 import { makeStyles } from '@material-ui/core/styles';
-import jumbotron from '../img/jumbotron.png';
-import jumbotron2 from '../img/jumbotron2.png';
+import Jumbotron, { Section1 } from '../stylesComp/Jumbotron';
+import robusta from '../img/robusta.jpg';
+import excelsa from '../img/excelsa.jpg';
+import arabica from '../img/arabika.jpg';
 
-const Section1 = styled.div`
-	height: 100vh;
-	background: linear-gradient(#ef962d, #fff 50%);
-   border: 1px solid transparent;
-`;
+import CardProd from '../stylesComp/Card';
 
-const JumbotronWrapper = styled.div`
-	/* border: 1px solid red; */
+const Section2 = styled.div`
+	text-align: center;
+	min-height: 100vh;
+	display: flex;
 	align-items: center;
-	justify-content: center;
-   margin: 0 auto;
-   margin-top: 6.5rem;
-   display: flex;
-   width: 80%;
-   height: 85%;
-   /* flex-direction: column-reverse; */
-   flex-wrap: wrap;
-   @media only screen and (min-width: 670px) {
-      flex-direction: row;
-      flex-wrap: wrap;
-   }
+	/* border: 1px solid green; */
+	@media only screen and (min-width: 670px) {
+	}
 `;
 
-const JumbotronTextWrapper = styled.div`
-   order: 2;
-   /* border: 1px solid red; */
-   height: 50%;
-   text-align: center;
-   @media only screen and (min-width: 670px) {
-      order: inherit;
-      width: 50%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      text-align: left;
-      padding: 2rem;
-      box-sizing: border-box;
+const CardsWrapper = styled.div`
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	/* border: 1px solid red; */
+   & > * {
+      margin-top: 2rem;
    }
-`
-const JumbotronImgWrapper = styled.div`
-   /* width: 100%; */
-   display: flex;
-   align-items: center;
-   height: 50%;
-   /* border: 1px solid yellow; */
-   @media only screen and (min-width: 670px) {
-      width: 50%;
+	@media only screen and (min-width: 670px) {
+		justify-content: space-evenly;
+      & > * {
+      margin-top: 0;
    }
-`
+	}
+`;
 
-const JumbotronMainTitle = styled.h2`
-   font-size: 2.2rem;
-   margin-bottom: .5rem;
-   @media only screen and (min-width: 670px) {
-      font-size: 3.3rem;
-      width: 100%;
-      max-width: 350px;
-   }
-`
+const Container = styled.div`
+	width: 80%;
+	margin: 0 auto;
+`;
 
-const JumbotronSecondTitle = styled.h3`
-   font-weight: 500;
+const TextWrapper = styled.div`
+	margin-top: 2rem;
+	@media only screen and (min-width: 670px) {
+		align-self: flex-end;
+		padding-bottom: 8rem;
+	}
+`;
+
+const MainTitle = styled.h2`
+	font-size: 2.2rem;
+   /* margin-bottom: 5rem; */
+	margin: 1rem auto;
+	@media only screen and (min-width: 670px) {
+		font-size: 3.3rem;
+		max-width: 500px;
+		width: 100%;
+	}
+`;
+
+const SecondTitle = styled.p`
+	font-size: 1.4rem;
    margin-bottom: 1rem;
-   font-size: 2rem;
-   @media only screen and (min-width: 670px) {
-      font-size: 2.2rem;
-      margin-bottom: 2rem;
-   }
-`
+	@media only screen and (min-width: 670px) {
+		font-size: 1.5rem;
+	}
+`;
 
-const JumbotronDesc = styled.p`
-   font-size: 1.4rem;
-   margin-bottom: 2rem;
-   @media only screen and (min-width: 670px) {
-      font-size: 1.5rem;
-      margin-bottom: 2.5rem;
-   }
-`
+const useStyles = makeStyles({
+	root: {
+		maxWidth: 345,
+	},
+	media: {
+		margin: '0 auto',
+		width: '50%',
+		height: 140,
+		objectFit: 'cover',
+	},
+});
 
-const JumbotronButton = styled(Link)`
-   background-color: #EF962D;
-   height: 40px;
-   width: 140px;
-   margin: 0 auto;
-   line-height: 40px;
-   display: block;
-   text-decoration: none;
-   color: #fff;
-   border-radius: .5rem;
-   font-size: 1.3rem;
-   transition: 0.2s all;
-   @media only screen and (min-width: 670px) {
-      margin: inherit;
-      text-align: center;
-   }
-
-   &:hover{
-      background-color: #d68b34;
-   }
-`
-
-const JumbotronImg = styled.img`
-   width: 100%;
-   /* height: 100%; */
-   max-width: 500px;
-   /* border: 1px solid green; */
-   margin: 0 auto;
-   /* object-fit: cover; */
-`
-
-const useStyles = makeStyles((theme) => ({}));
+// const useStyles = makeStyles((theme) => ({}));
 const Home = () => {
-	useStyles();
+	const classes = useStyles();
 	return (
-		<Section1>
-			<Navbar />
-			<JumbotronWrapper>
-				<JumbotronTextWrapper>
-					<JumbotronMainTitle>Bingung Cari Produk Kopi Dampit ?</JumbotronMainTitle>
-					<JumbotronSecondTitle>Cari Di sini Aja</JumbotronSecondTitle>
-					<JumbotronDesc>
-						Kopi khas dampit dengan kualitas terbaik! kamu cukup melakukan
-						pembelian di sini, Maka kurir kami akan langsung ke tempatmu.
-					</JumbotronDesc>
-					<JumbotronButton to="/">Beli Sekarang</JumbotronButton>
-				</JumbotronTextWrapper>
-				<JumbotronImgWrapper>
-					<JumbotronImg src={jumbotron2}/>
-				</JumbotronImgWrapper>
-			</JumbotronWrapper>
-		</Section1>
+		<>
+			<Section1>
+				<Navbar />
+				<Jumbotron />
+			</Section1>
+			<Section2>
+				<Container>
+					<TextWrapper>
+						<MainTitle>Produk Kami <br /> dengan Kualitas Terbaik </MainTitle>
+						<SecondTitle>
+							Lorem ipsum dolor sit amet consectetur adipisicing elit.
+							Sit, expedita.
+						</SecondTitle>
+					</TextWrapper>
+					<CardsWrapper>
+						<CardProd
+							nama={'Kopi Robusta'}
+							img={robusta}
+							desc={
+								'Robusta memiliki citarasa pahit. Rasanya sangat simpel dan ini hanyalah kopi punya aroma tegas.'
+							}
+						/>
+						<CardProd
+							nama={'Kopi Arabika'}
+							img={arabica}
+							desc={
+								'Arabika memiliki lebih banyak (rasa) citrus. Rasa kopi ini agak asam dan aroma simple'
+							}
+						/>
+						<CardProd
+							nama={'Kopi Excelsa'}
+							img={excelsa}
+							desc={
+								'Kopi Excelsa mempunyai citarasa dan aroma yang dikategorikan kuat dan dominan pahit '
+							}
+						/>
+					</CardsWrapper>
+				</Container>
+			</Section2>
+		</>
 	);
 };
 
