@@ -10,15 +10,18 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 
 const CardWrapper = styled(Card)`
-   /* display: flex;
+	/* display: flex;
    flex-direction: column;
    justify-content: space-between; */
-   transition: .5s ease all;
-   border: 1px solid white;
-&:hover {
-   border: 1px solid #ef962d;
-}
-`
+	transition: 0.5s ease all;
+	border: 1px solid white;
+	&:hover {
+		border: 1px solid #ef962d;
+	}
+	@media only screen and (min-width: 670px) {
+		text-align: left;
+	}
+`;
 
 const NameProduct = styled.h3`
 	font-size: 2rem;
@@ -35,15 +38,18 @@ const DescProduct = styled.p`
 `;
 
 const BuyButton = styled(Button)`
-   margin: 0 auto;
-   border: 1px solid #ef962d;
-   color: #ef962d;
-   padding: .5rem 1.5rem;
-`
+	margin: 0 auto;
+	border: 1px solid #ef962d;
+	color: #ef962d;
+	padding: 0.5rem 1.5rem;
+	@media only screen and (min-width: 670px) {
+		margin: 0;
+	}
+`;
 
 const CardActionsWrapper = styled(CardActions)`
-   /* border: 1px solid red; */
-`
+	/* border: 1px solid red; */
+`;
 
 const useStyles = makeStyles({
 	root: {
@@ -74,9 +80,7 @@ const CardProd = ({ nama, img, desc }) => {
 				</CardContent>
 			</div>
 			<CardActionsWrapper>
-				<BuyButton>
-					Beli Sekarang
-				</BuyButton>
+				<BuyButton>Beli Sekarang</BuyButton>
 			</CardActionsWrapper>
 		</CardWrapper>
 	);
