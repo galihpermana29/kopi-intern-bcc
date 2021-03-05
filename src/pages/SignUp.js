@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, Redirect } from 'react-router-dom';
 import imgLog from '../img/log.png';
 import {
 	Wrapper,
@@ -10,11 +10,49 @@ import {
 	Input,
 	MainButton,
 	SecondaryButton,
-   MainTitle,
-   SubTitle
+	MainTitle,
+	SubTitle,
 } from '../stylesComp/LoginSign';
+import kopi from '../api/kopi';
+import { useAuth } from '../config/Auth';
 
 const Login = () => {
+	const [Email, setEmail] = useState('');
+	const [Password, setPassword] = useState('');
+	const [Name, setName] = useState('');
+	const [Phone, setPhone] = useState('');
+	const { setAuthTokens } = useAuth();
+	const [isLogged, setIsLogged] = useState(false);
+
+	const handleSignup = async (e) => {
+		e.preventDefault();
+		await kopi
+			.post('/api/users', {
+				name: Name,
+				email: Email,
+				password: Password,
+				phone: Phone,
+            role: 2
+			})
+			.then((res) => {
+				console.log(res);
+			});
+		await kopi
+			.post('/api/users/signin', {
+				email: Email,
+				password: Password,
+			})
+			.then((res) => {
+            console.log(res)
+				res.status === 200 && setAuthTokens(res.data.message.token);
+				setIsLogged(true);
+			});
+	};
+
+	if (isLogged) {
+		return <Redirect to={'/'} />;
+	}
+
 	return (
 		<Container>
 			<Wrapper>
@@ -24,11 +62,35 @@ const Login = () => {
 				<TextWrapper>
 					<MainTitle>Daftar</MainTitle>
 					<SubTitle>Silahkan mendaftar untuk masuk</SubTitle>
-					<form action="">
-						<Input type="text" name="name" label="Name" required/>
-						<Input type="text" name="address" label="Address" required/>
-						<Input type="email" name="email" label="Email" required/>
-						<Input type="password" name="password" label="Password" required/>
+					<form onSubmit={handleSignup}>
+						<Input
+							type="text"
+							name="name"
+							label="Name"
+							required
+							onChange={(e) => setName(e.target.value)}
+						/>
+						<Input
+							type="number"
+							name="phone"
+							label="phone"
+							required
+							onChange={(e) => setPhone(e.target.value)}
+						/>
+						<Input
+							type="email"
+							name="email"
+							label="Email"
+							required
+							onChange={(e) => setEmail(e.target.value)}
+						/>
+						<Input
+							type="password"
+							name="password"
+							label="Password"
+							required
+							onChange={(e) => setPassword(e.target.value)}
+						/>
 						<p>Lupa Password?</p>
 						<MainButton style={{ marginTop: '2rem' }} type="submit">
 							Daftar

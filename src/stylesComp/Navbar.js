@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link, Redirect } from 'react-router-dom';
@@ -12,10 +12,10 @@ import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import { useAuth } from '../config/Auth';
 
 const NavbarWrapper1 = styled(AppBar)`
 	background: #ffffff;
-   
 `;
 const NavbarWrapper2 = styled.div`
 	display: flex;
@@ -33,14 +33,15 @@ const LogoImg = styled.img`
 	width: 40px;
 `;
 
-const NavbarLink = styled(Link)`
+const NavbarLink = styled.a`
 	text-decoration: none;
 	color: #000;
 	padding: 0.2rem 0.2rem;
 	transition: 0.2s ease-in-out all;
 	/* border-radius: 0.3rem;  */
 	border-bottom: 2px solid #fff;
-   font-weight: 400;
+	font-weight: 400;
+	cursor: pointer;
 	&:hover {
 		/* background-color: #ef962d; */
 		color: #ef962d;
@@ -51,7 +52,7 @@ const NavbarLink = styled(Link)`
 const NavbarLinkWrapper = styled.div`
 	margin-left: 7rem;
 	/* display: flex; */
-	width: 250px;
+	width: 270px;
 	justify-content: space-between;
 	display: none;
 	/* visibility: hidden; */
@@ -64,12 +65,12 @@ const NavbarLinkWrapper = styled.div`
 
 const NavbarIconWrapper = styled.div`
 	width: 100%;
-	max-width: 140px;
+	/* max-width: 130px; */
+	max-width: ${({ auth }) => (auth ? '130px' : '170px')};
 	display: flex;
 	justify-content: space-between;
-	/* justify-self: end; */
 	@media only screen and (min-width: 670px) {
-		max-width: 110px;
+		max-width: ${({ auth }) => (auth ? '100px' : '200px')};
 	}
 `;
 
@@ -82,21 +83,54 @@ const HamburgerIcon = styled(MenuIcon)`
 	}
 `;
 
-const useStyles = makeStyles((theme) => ({}));
+
+const ButtonOnNavbar = styled(Link)`
+	/* margin-right: 2rem; */
+	text-decoration: none;
+	color: #ef962d;
+   border: 1px solid #ef962d;
+	padding: 0.3rem 0.5rem;
+	margin-left: 1rem;
+	border-radius: 0.5rem;
+   &:not(:last-child){
+      background-color: #ef962d;
+      color: white;
+   }
+	@media only screen and (min-width: 670px) {
+		padding: 0.5rem 1rem;
+	}
+
+   
+`;
+
+// const useStyles = makeStyles((theme) => ({}));
 
 const Navbar = () => {
-	useStyles();
-	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
-	const [auth, setAuth] = useState(true);
+	const { authTokens, setAuthTokens } = useAuth();
+	const [auth, setAuth] = useState(false);
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
+	console.log(auth);
+	console.log(authTokens);
+
+	const handleLogout = () => {
+		setAuthTokens();
+		localStorage.clear();
+	};
+	// useStyles();
+
+	useEffect(() => {
+		if (!(authTokens === null)) {
+			setAuth(true);
+		}
+	});
 
 	const handleMenu = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
 
 	const handleClose = () => {
-      <Redirect to="/login"/>
+		<Redirect to="/login" />;
 		setAnchorEl(null);
 	};
 
@@ -107,20 +141,24 @@ const Navbar = () => {
 					<LogoImg src={logo} />
 					<NavbarWrapper2>
 						<NavbarLinkWrapper>
-							<NavbarLink>Home</NavbarLink>
-							<NavbarLink>Produk</NavbarLink>
-							<NavbarLink>Galeri</NavbarLink>
+							<NavbarLink href="/#home">Home</NavbarLink>
+							<NavbarLink href="/#produk">Produk</NavbarLink>
+							<NavbarLink href="/#galeri">Galeri</NavbarLink>
+							<NavbarLink href="/#about">About</NavbarLink>
 						</NavbarLinkWrapper>
-						<NavbarIconWrapper>
-							<IconButton aria-label="show 4 new mails">
-								<Badge badgeContent={9} color="secondary">
-									<ShoppingCartIcon
-										style={{ fontSize: '2.5rem', color: 'black' }}
-									/>
-								</Badge>
-							</IconButton>
-							{auth && (
+						<NavbarIconWrapper auth={auth}>
+							{auth ? (
 								<div>
+									<IconButton aria-label="show 4 new mails">
+										<Badge badgeContent={9} color="secondary">
+											<ShoppingCartIcon
+												style={{
+													fontSize: '2.5rem',
+													color: 'black',
+												}}
+											/>
+										</Badge>
+									</IconButton>
 									<IconButton
 										aria-label="account of current user"
 										aria-controls="menu-appbar"
@@ -156,14 +194,28 @@ const Navbar = () => {
 											style={{ fontSize: '1.5rem' }}
 											onClick={handleClose}
 										>
-											Logout
+											<Link
+												to="/login"
+												style={{
+													textDecoration: 'none',
+													color: 'black',
+												}}
+												onClick={handleLogout}
+											>
+												Logout
+											</Link>
 										</MenuItem>
 									</Menu>
 								</div>
+							) : (
+								<div>
+									<ButtonOnNavbar to={'/login'}>Masuk</ButtonOnNavbar>
+									<ButtonOnNavbar to={'/signup'}>
+										Daftar
+									</ButtonOnNavbar>
+								</div>
 							)}
-							{/* <IconButton edge="start" aria-label="menu"> */}
 							<HamburgerIcon />
-							{/* </IconButton> */}
 						</NavbarIconWrapper>
 					</NavbarWrapper2>
 				</Toolbar>

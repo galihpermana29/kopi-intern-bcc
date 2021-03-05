@@ -6,6 +6,7 @@ import CardProd from '../stylesComp/Card';
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 
+
 export const Section2 = styled.div`
 	text-align: center;
 	min-height: 100vh;
@@ -25,6 +26,7 @@ export const CardsWrapper = styled.div`
 	& > * {
 		margin-top: 2rem;
 	}
+   margin-bottom: 2rem;
 	@media only screen and (min-width: 670px) {
 		justify-content: space-evenly;
 		& > * {
@@ -53,6 +55,7 @@ export const TextWrapper = styled.div`
 export const MainTitle = styled.h2`
 	font-size: 2.2rem;
 	/* margin-bottom: 5rem; */
+   text-align: center;
 	margin: 1rem auto;
 	@media only screen and (min-width: 670px) {
 		font-size: 3.3rem;

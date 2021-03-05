@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import imgLog from '../img/log.png';
 import {
@@ -13,10 +13,34 @@ import {
 	MainTitle,
 	SubTitle,
 } from '../stylesComp/LoginSign';
+import kopi from '../api/kopi';
+import { useAuth } from '../config/Auth';
 
 const Login = () => {
+	const [Email, setEmail] = useState('');
+	const [Password, setPassword] = useState('');
+	const { setAuthTokens } = useAuth();
+	const [isLogged, setIsLogged] = useState(false);
+
+	const handleLogin = async (e) => {
+		e.preventDefault();
+		await kopi
+			.post('/api/users/signin', {
+				email: Email,
+				password: Password,
+			})
+			.then((res) => {
+				res.status === 200 && setAuthTokens(res.data.message.token);
+				setIsLogged(true);
+			});
+	};
+
+	if (isLogged) {
+		return <Redirect to={'/'} />;
+	}
+
 	const handleSubmit = (e) => {
-      console.log(e);
+		console.log(e);
 		<Redirect to="/" />;
 	};
 	return (
@@ -30,16 +54,27 @@ const Login = () => {
 					<SubTitle>
 						Silahkan masukkan detail untuk login ke akun anda
 					</SubTitle>
-					<form >
-						<Input type="email" name="email" label="Email" required />
+					<form onSubmit={handleLogin}>
+						<Input
+							type="email"
+							name="email"
+							label="Email"
+							required
+							onChange={(e) => setEmail(e.target.value)}
+						/>
 						<Input
 							type="password"
 							name="password"
 							label="Password"
 							required
+							onChange={(e) => setPassword(e.target.value)}
 						/>
 						<p>Lupa Password?</p>
-						<MainButton style={{ marginTop: '2rem' }} type="submit" onClick={handleSubmit}>
+						<MainButton
+							style={{ marginTop: '2rem' }}
+							type="submit"
+							// onClick={handleSubmit}
+						>
 							Masuk
 						</MainButton>
 					</form>

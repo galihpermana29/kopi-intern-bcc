@@ -4,7 +4,7 @@ import jumbotron2 from '../img/jumbotron2.png';
 
 export const Section1 = styled.div`
 	height: 100vh;
-	background: linear-gradient(#ef962d, #fff 50%);
+	background: linear-gradient(#ef962d, #fff 70%);
 	border: .1px solid white;
 `;
 
