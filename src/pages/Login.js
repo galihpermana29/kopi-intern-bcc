@@ -15,6 +15,7 @@ import {
 } from '../stylesComp/LoginSign';
 import kopi from '../api/kopi';
 import { useAuth } from '../config/Auth';
+import { storeId } from '../api/userId';
 
 const Login = () => {
 	const [Email, setEmail] = useState('');
@@ -30,6 +31,7 @@ const Login = () => {
 				password: Password,
 			})
 			.then((res) => {
+				storeId(res);
 				res.status === 200 && setAuthTokens(res.data.message.token);
 				setIsLogged(true);
 			});
@@ -39,10 +41,6 @@ const Login = () => {
 		return <Redirect to={'/'} />;
 	}
 
-	const handleSubmit = (e) => {
-		console.log(e);
-		<Redirect to="/" />;
-	};
 	return (
 		<Container>
 			<Wrapper>
@@ -70,11 +68,7 @@ const Login = () => {
 							onChange={(e) => setPassword(e.target.value)}
 						/>
 						<p>Lupa Password?</p>
-						<MainButton
-							style={{ marginTop: '2rem' }}
-							type="submit"
-							// onClick={handleSubmit}
-						>
+						<MainButton style={{ marginTop: '2rem' }} type="submit">
 							Masuk
 						</MainButton>
 					</form>

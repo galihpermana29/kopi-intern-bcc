@@ -14,6 +14,7 @@ import {
 	SubTitle,
 } from '../stylesComp/LoginSign';
 import kopi from '../api/kopi';
+import { storeId } from '../api/userId';
 import { useAuth } from '../config/Auth';
 
 const Login = () => {
@@ -43,7 +44,7 @@ const Login = () => {
 				password: Password,
 			})
 			.then((res) => {
-            console.log(res)
+            storeId(res)
 				res.status === 200 && setAuthTokens(res.data.message.token);
 				setIsLogged(true);
 			});

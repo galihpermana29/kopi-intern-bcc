@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Navbar from '../stylesComp/Navbar';
@@ -16,14 +16,15 @@ import Section4Content, { Section4 } from '../stylesComp/Section4Content';
 import { Footer } from '../stylesComp/Footer';
 import { useAuth } from '../config/Auth';
 import { Link, Redirect, useHistory, useLocation } from 'react-router-dom';
+import { getId } from '../api/userId';
 
 
-const useStyles = makeStyles((theme) => ({}));
+
 
 const Home = () => {
-   const { authTokens } = useAuth();
-  
+   const useStyles = makeStyles((theme) => ({}));
 	useStyles();
+   
 	return (
 		<>
 			<Section1 id="home">

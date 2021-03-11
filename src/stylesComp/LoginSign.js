@@ -88,7 +88,7 @@ export const MainForm = styled.form`
 export const Input = styled(TextField).attrs(() => ({
 	variant: 'outlined',
 	InputProps: { style: { fontSize: '1.3rem', fontFamily: 'inherit', height: '50px' } },
-	InputLabelProps: { style: { fontSize: '1.5rem', fontFamily: 'inherit' } },
+	InputLabelProps: { style: { fontSize: '1.3rem', fontFamily: 'inherit' } },
 }))`
 	width: 100%;
 	&:first-child {

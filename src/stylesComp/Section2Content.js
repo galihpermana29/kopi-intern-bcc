@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import robusta from '../img/robusta.jpg';
 import excelsa from '../img/excelsa.jpg';
-import arabica from '../img/arabika.jpg';
+// import arabica from '../img/arabika.jpg';
 import CardProd from '../stylesComp/Card';
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
-
+import { ProdukData } from './ProdukData';
+import kopi from '../api/kopi';
+import arabica from '../img/arabika.jpg';
 
 export const Section2 = styled.div`
 	text-align: center;
@@ -26,27 +28,27 @@ export const CardsWrapper = styled.div`
 	& > * {
 		margin-top: 2rem;
 	}
-   margin-bottom: 2rem;
+	margin-bottom: 2rem;
 	@media only screen and (min-width: 670px) {
 		justify-content: space-evenly;
 		& > * {
 			margin-top: 0;
 		}
-      margin-bottom: 5rem;
+		margin-bottom: 5rem;
 	}
 `;
 
 export const Container = styled.div`
 	width: 80%;
 	margin: 0 auto;
-   height: 100%;
+	height: 100%;
 `;
 
 export const TextWrapper = styled.div`
-   /* text-align: center; */
+	/* text-align: center; */
 	margin-top: 3rem;
 	@media only screen and (min-width: 670px) {
-      margin-top: 5rem;
+		margin-top: 5rem;
 		align-self: flex-end;
 		padding-bottom: 3rem;
 	}
@@ -55,7 +57,7 @@ export const TextWrapper = styled.div`
 export const MainTitle = styled.h2`
 	font-size: 2.2rem;
 	/* margin-bottom: 5rem; */
-   text-align: center;
+	text-align: center;
 	margin: 1rem auto;
 	@media only screen and (min-width: 670px) {
 		font-size: 3.3rem;
@@ -84,9 +86,18 @@ export const useStyles = makeStyles({
 	},
 });
 
-
 const Section2Content = () => {
-   const classes = useStyles();
+	const classes = useStyles();
+   const [produk, setProduk] = useState();
+	const getProductData = async () => {
+		await kopi.get('/api/products').then((res) => {
+         setProduk(res.data.message)
+		});
+	};
+	useEffect(() => {
+		getProductData();
+	}, []);
+
 	return (
 		<Container>
 			<TextWrapper>
@@ -99,27 +110,18 @@ const Section2Content = () => {
 				</SecondTitle>
 			</TextWrapper>
 			<CardsWrapper>
-				<CardProd
-					nama={'Kopi Robusta'}
-					img={robusta}
-					desc={
-						'Robusta memiliki citarasa pahit. Rasanya sangat simpel dan ini hanyalah kopi punya aroma tegas.'
-					}
-				/>
-				<CardProd
-					nama={'Kopi Arabika'}
-					img={arabica}
-					desc={
-						'Arabika memiliki lebih banyak (rasa) citrus. Rasa kopi ini agak asam dan aroma simple'
-					}
-				/>
-				<CardProd
-					nama={'Kopi Excelsa'}
-					img={excelsa}
-					desc={
-						'Kopi Excelsa mempunyai citarasa dan aroma yang dikategorikan kuat dan dominan pahit '
-					}
-				/>
+				{produk && produk.map(({ id_product, product_name, product_price, product_desc }) => {
+					return (
+						<CardProd
+							nama={product_name}
+							img={arabica}
+							desc={product_desc}
+							harga={product_price}
+                     id={id_product}
+							key={id_product}
+						/>
+					);
+				})}
 			</CardsWrapper>
 		</Container>
 	);

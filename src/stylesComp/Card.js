@@ -10,11 +10,10 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { useAuth } from '../config/Auth';
+import kopi from '../api/kopi';
+import ModalWrapper from './Modal';
 
 const CardWrapper = styled(Card)`
-	/* display: flex;
-   flex-direction: column;
-   justify-content: space-between; */
 	transition: 0.5s ease all;
 	border: 1px solid white;
 	&:hover {
@@ -25,13 +24,13 @@ const CardWrapper = styled(Card)`
 	}
 `;
 
-const NameProduct = styled.h3`
+export const NameProduct = styled.h3`
 	font-size: 2rem;
 	margin: 1rem 0;
 	font-family: 'Poppins';
 `;
 
-const DescProduct = styled.p`
+export const DescProduct = styled.p`
 	font-family: 'Poppins';
 	font-size: 1.4rem;
 	@media only screen and (min-width: 670px) {
@@ -49,11 +48,9 @@ const BuyButton = styled(Button)`
 	}
 `;
 
-const CardActionsWrapper = styled(CardActions)`
-	/* border: 1px solid red; */
-`;
+const CardActionsWrapper = styled(CardActions)``;
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
 	root: {
 		maxWidth: 320,
 		textAlign: 'center',
@@ -64,38 +61,90 @@ const useStyles = makeStyles({
 		height: 140,
 		objectFit: 'cover',
 	},
-});
+	modal: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		cursor: 'pointer',
+	},
+	paper: {
+		backgroundColor: theme.palette.background.paper,
+		boxShadow: theme.shadows[5],
+		padding: theme.spacing(2, 4, 3),
+	},
+	button: {
+		margin: '0 auto',
+	},
+}));
 
-const CardProd = ({ nama, img, desc }) => {
+const CardProd = ({ nama, img, desc, harga, id }) => {
 	const { authTokens } = useAuth();
 	const history = useHistory();
+	const [open, setOpen] = useState(false);
+   // const [ProductName, setProductName] = useState('');
+   // const [IdProduct, setIdProduct] = useState();
+   // const [IdUser, setIdUser] = useState();
+   // const [Quantity, setQuantity] = useState();
 
-	const handleClick = () => {
+	const handleOpen = () => {
+		setOpen(true);
+	};
+
+	const handleClose = async () => {
+		setOpen(false);
+		// await kopi
+		// 	.post('/api/carts', {
+		// 		productName: ProductName,
+		// 		idProduct: IdProduct,
+		// 		idUser: IdUser,
+		// 		quantity: Quantity,
+		// 	})
+		// 	.then((res) => {
+            
+      //       console.log(res)
+		// 	});
+	};
+
+	const handleClick = (e) => {
 		if (authTokens === null) {
 			history.push('/login');
 		} else {
-         return;
-      }
+			handleOpen();
+			return;
+		}
 	};
 
 	const classes = useStyles();
 	return (
-		<CardWrapper className={classes.root} elevation={0}>
-			<div>
-				<CardMedia
-					className={classes.media}
-					image={img}
-					title="Contemplative Reptile"
-				/>
-				<CardContent>
-					<NameProduct>{nama}</NameProduct>
-					<DescProduct>{desc}</DescProduct>
-				</CardContent>
-			</div>
-			<CardActionsWrapper>
-				<BuyButton onClick={handleClick}>Beli Sekarang</BuyButton>
-			</CardActionsWrapper>
-		</CardWrapper>
+		<>
+			<CardWrapper className={classes.root} elevation={0}>
+				<div>
+					<CardMedia
+						className={classes.media}
+						image={img}
+						title="Contemplative Reptile"
+					/>
+					<CardContent>
+						<NameProduct>{nama}</NameProduct>
+						<DescProduct>{desc}</DescProduct>
+					</CardContent>
+				</div>
+				<CardActionsWrapper>
+					<BuyButton onClick={(e) => handleClick(e)}>
+						Beli Sekarang
+					</BuyButton>
+				</CardActionsWrapper>
+			</CardWrapper>
+			<ModalWrapper
+				nama={nama}
+				img={img}
+				desc={desc}
+				harga={harga}
+				id={id}
+				open={open}
+				handleClose={handleClose}
+			/>
+		</>
 	);
 };
 

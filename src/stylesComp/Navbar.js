@@ -83,24 +83,21 @@ const HamburgerIcon = styled(MenuIcon)`
 	}
 `;
 
-
 const ButtonOnNavbar = styled(Link)`
 	/* margin-right: 2rem; */
 	text-decoration: none;
 	color: #ef962d;
-   border: 1px solid #ef962d;
+	border: 1px solid #ef962d;
 	padding: 0.3rem 0.5rem;
 	margin-left: 1rem;
 	border-radius: 0.5rem;
-   &:not(:last-child){
-      background-color: #ef962d;
-      color: white;
-   }
+	&:not(:last-child) {
+		background-color: #ef962d;
+		color: white;
+	}
 	@media only screen and (min-width: 670px) {
 		padding: 0.5rem 1rem;
 	}
-
-   
 `;
 
 // const useStyles = makeStyles((theme) => ({}));
@@ -110,14 +107,11 @@ const Navbar = () => {
 	const [auth, setAuth] = useState(false);
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
-	console.log(auth);
-	console.log(authTokens);
 
 	const handleLogout = () => {
 		setAuthTokens();
 		localStorage.clear();
 	};
-	// useStyles();
 
 	useEffect(() => {
 		if (!(authTokens === null)) {
@@ -134,9 +128,11 @@ const Navbar = () => {
 		setAnchorEl(null);
 	};
 
+	// useStyles();
+
 	return (
 		<div>
-			<NavbarWrapper1 elevation={0}>
+			<AppBar elevation={0} style={{backgroundColor: '#fff'}}>
 				<Toolbar>
 					<LogoImg src={logo} />
 					<NavbarWrapper2>
@@ -150,13 +146,15 @@ const Navbar = () => {
 							{auth ? (
 								<div>
 									<IconButton aria-label="show 4 new mails">
-										<Badge badgeContent={9} color="secondary">
-											<ShoppingCartIcon
-												style={{
-													fontSize: '2.5rem',
-													color: 'black',
-												}}
-											/>
+										<Badge badgeContent={2} color="secondary">
+											<Link to={'/cart'}>
+												<ShoppingCartIcon
+													style={{
+														fontSize: '2.5rem',
+														color: 'black',
+													}}
+												/>
+											</Link>
 										</Badge>
 									</IconButton>
 									<IconButton
@@ -219,7 +217,7 @@ const Navbar = () => {
 						</NavbarIconWrapper>
 					</NavbarWrapper2>
 				</Toolbar>
-			</NavbarWrapper1>
+			</AppBar>
 		</div>
 	);
 };
