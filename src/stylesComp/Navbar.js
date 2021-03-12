@@ -140,7 +140,7 @@ const Navbar = () => {
 							<NavbarLink href="/#home">Home</NavbarLink>
 							<NavbarLink href="/#produk">Produk</NavbarLink>
 							<NavbarLink href="/#galeri">Galeri</NavbarLink>
-							<NavbarLink href="/#about">About</NavbarLink>
+							<NavbarLink href="/#about">Tentang</NavbarLink>
 						</NavbarLinkWrapper>
 						<NavbarIconWrapper auth={auth}>
 							{auth ? (

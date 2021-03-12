@@ -98,10 +98,9 @@ const ModalWrapper = ({ nama, img, desc, harga, id, open, handleClose }) => {
 	const [ProductName, setProductName] = useState(nama);
 	const [IdProduct, setIdProduct] = useState(id);
 	const [Quantity, setQuantity] = useState(0);
-	const [isProductOnCart, setIsProductOnCart] = useState();
-   const [pCart, setPCart] = useState();
-	// notif
+	const [pCart, setPCart] = useState();
 	const [openNotif, setOpenNotif] = useState(false);
+	const [notifMessage, setNotifMessage] = useState('');
 
 	const showNotif = () => {
 		setOpenNotif(true);
@@ -122,26 +121,62 @@ const ModalWrapper = ({ nama, img, desc, harga, id, open, handleClose }) => {
 				},
 			})
 			.then((res) => {
-            setPCart(res.data.message)
+				setPCart(res.data.message);
 			});
-         console.log(isProductOnCart)
 	};
 
 	const handleAddToCart = async (e) => {
+		if (pCart.length > 0) {
+			for (let i = 0; i < pCart.length; i++) {
+				if (pCart[i].product_name == ProductName) {
+					await validation(pCart[i].product_name == ProductName);
+					return;
+				}
+			}
+			await validation(false);
+			return;
+		} else {
+			await validation(false);
+			return;
+		}
+	};
+   
+	const validation = async (isProd) => {
 		if (Quantity === undefined || Quantity === NaN || Quantity <= 0) {
 			return;
 		} else {
-         setIsProductOnCart(false)
-         console.log(isProductOnCart)
-			if (isProductOnCart) {
-				console.log('asi');
+			if (isProd) {
+				await kopi
+					.put(
+						'/api/carts/',
+						{
+							idProduct: IdProduct,
+							quantity: Quantity,
+							idUser: IdUser,
+						},
+						{
+							headers: {
+								Authorization: `Bearer ${authTokens}`,
+							},
+						}
+					)
+					.then((res) => {
+						setNotifMessage('Produk berhasil diupdate');
+						showNotif();
+						handleClose();
+						setQuantity(0);
+					});
+
+				return;
 			} else {
 				await kopi
 					.post(
-						'/api/carts',
+						'/api/carts/',
 						{
 							productName: ProductName,
 							idProduct: IdProduct,
+							imgProduct: img,
+							priceProduct: harga,
 							idUser: IdUser,
 							quantity: Quantity,
 						},
@@ -152,18 +187,20 @@ const ModalWrapper = ({ nama, img, desc, harga, id, open, handleClose }) => {
 						}
 					)
 					.then((res) => {
+						setNotifMessage('Produk berhasil ditambahkan ke keranjang');
 						showNotif();
-						console.log(res);
 						handleClose();
 						setQuantity(0);
 					});
+
+				return;
 			}
 		}
 	};
 
-   useEffect(() => {
-      getProductOnCarts();
-   }, [1])
+	useEffect(() => {
+		getProductOnCarts();
+	}, [open]);
 
 	return (
 		<div>
@@ -185,7 +222,11 @@ const ModalWrapper = ({ nama, img, desc, harga, id, open, handleClose }) => {
 				<Fade in={open}>
 					<div className={classes.paper}>
 						<ModalContentWrapper>
-							<ModalImg src={img} alt="image" width="100px" />
+							<ModalImg
+								src={`${process.env.PUBLIC_URL}/assets/${img}.jpg`}
+								alt="image"
+								width="100px"
+							/>
 							<ModalTextWrapper>
 								<NameProduct>{nama}</NameProduct>
 								<PriceProduct>Rp.{harga}/250gr</PriceProduct>
@@ -221,7 +262,7 @@ const ModalWrapper = ({ nama, img, desc, harga, id, open, handleClose }) => {
 				openNotif={openNotif}
 				showNotif={showNotif}
 				closeNotif={closeNotif}
-				message={'Berhasil ditambahkan kedalam keranjang'}
+				message={notifMessage}
 			/>
 		</div>
 	);

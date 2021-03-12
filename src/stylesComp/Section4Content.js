@@ -57,11 +57,12 @@ const Section4Content = () => {
 				<TextandLogoWrapper>
 					<Logo src={logo} alt="logo" width="200px" />
 					<SecondTitle>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit.
-						Debitis, vel harum! Commodi maiores voluptates velit,
-						inventore in, repudiandae cumque quam provident consectetur
-						necessitatibus repellat iusto, itaque explicabo eligendi
-						nostrum dolor?
+						Sebuah Website untuk bekerja sama dengan salah satu UMKM
+						produk Kopi di dampit yang terdampak pandemi untuk bisa
+						berjualan di website kami.​ Nilai bisnis utama kami ada di
+						pengemasan dan pendistribusian untuk menambah nilai jual kopi
+						sekaligus mempermudah penikmat dan pemilik kedai kopi dalam
+						menjangkau produk UMKM tersebut.​
 					</SecondTitle>
 				</TextandLogoWrapper>
 			</Wrapper>

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import robusta from '../img/robusta.jpg';
 import excelsa from '../img/excelsa.jpg';
-// import arabica from '../img/arabika.jpg';
+import arabica from '../img/arabika.jpg';
 import CardProd from '../stylesComp/Card';
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 import { ProdukData } from './ProdukData';
 import kopi from '../api/kopi';
-import arabica from '../img/arabika.jpg';
+// import arabica from '../img/arabika.jpg';
 
 export const Section2 = styled.div`
 	text-align: center;
@@ -92,6 +92,7 @@ const Section2Content = () => {
 	const getProductData = async () => {
 		await kopi.get('/api/products').then((res) => {
          setProduk(res.data.message)
+         console.log(res.data.message[0].product_img)
 		});
 	};
 	useEffect(() => {
@@ -110,11 +111,11 @@ const Section2Content = () => {
 				</SecondTitle>
 			</TextWrapper>
 			<CardsWrapper>
-				{produk && produk.map(({ id_product, product_name, product_price, product_desc }) => {
+				{produk && produk.map(({ id_product, product_name, product_price, product_img, product_desc }) => {
 					return (
 						<CardProd
 							nama={product_name}
-							img={arabica}
+							img={product_img}
 							desc={product_desc}
 							harga={product_price}
                      id={id_product}

@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Link, Redirect, useHistory, useLocation } from 'react-router-dom';
-import jumbotron1 from '../img/jumbotron2.png';
+import { useHistory } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { useAuth } from '../config/Auth';
-import kopi from '../api/kopi';
 import ModalWrapper from './Modal';
+import { MainButton, SecondaryButton } from '../stylesComp/LoginSign';
+
 
 const CardWrapper = styled(Card)`
 	transition: 0.5s ease all;
@@ -40,9 +39,11 @@ export const DescProduct = styled.p`
 
 const BuyButton = styled(Button)`
 	margin: 0 auto;
+   width: 100%;
 	border: 1px solid #ef962d;
 	color: #ef962d;
-	padding: 0.5rem 1.5rem;
+	padding: 1rem 1.5rem;
+   font-size: 1.1rem;
 	@media only screen and (min-width: 670px) {
 		margin: 0;
 	}
@@ -78,13 +79,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CardProd = ({ nama, img, desc, harga, id }) => {
+   console.log(nama, img, desc, harga, id)
 	const { authTokens } = useAuth();
 	const history = useHistory();
 	const [open, setOpen] = useState(false);
-   // const [ProductName, setProductName] = useState('');
-   // const [IdProduct, setIdProduct] = useState();
-   // const [IdUser, setIdUser] = useState();
-   // const [Quantity, setQuantity] = useState();
 
 	const handleOpen = () => {
 		setOpen(true);
@@ -92,17 +90,6 @@ const CardProd = ({ nama, img, desc, harga, id }) => {
 
 	const handleClose = async () => {
 		setOpen(false);
-		// await kopi
-		// 	.post('/api/carts', {
-		// 		productName: ProductName,
-		// 		idProduct: IdProduct,
-		// 		idUser: IdUser,
-		// 		quantity: Quantity,
-		// 	})
-		// 	.then((res) => {
-            
-      //       console.log(res)
-		// 	});
 	};
 
 	const handleClick = (e) => {
@@ -121,7 +108,7 @@ const CardProd = ({ nama, img, desc, harga, id }) => {
 				<div>
 					<CardMedia
 						className={classes.media}
-						image={img}
+						image={`${process.env.PUBLIC_URL}/assets/${img}.jpg`}
 						title="Contemplative Reptile"
 					/>
 					<CardContent>
@@ -129,7 +116,7 @@ const CardProd = ({ nama, img, desc, harga, id }) => {
 						<DescProduct>{desc}</DescProduct>
 					</CardContent>
 				</div>
-				<CardActionsWrapper>
+				<CardActionsWrapper style={{width: '100%'}}>
 					<BuyButton onClick={(e) => handleClick(e)}>
 						Beli Sekarang
 					</BuyButton>
