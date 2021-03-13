@@ -90,7 +90,6 @@ const Login = () => {
 							required
 							onChange={(e) => setPassword(e.target.value)}
 						/>
-						<p>Email atau password salah</p>
 						<p>Lupa Password?</p>
 						<MainButton style={{ marginTop: '2rem' }} type="submit">
 							Masuk
