@@ -42,19 +42,7 @@ const Login = () => {
 			setLogMess(dataRes.status);
 			return;
 		}
-		// .then((res) => {
-		// 	storeId(res);
-		// 	if (res.status === 200) {
-		// 		setAuthTokens(res.data.message.token);
-		// 		setIsLogged(true);
-		//       setRole(res.data.message.role);
-		//       return;
-		// 	} else {
-		//       setIsLogged(false);
-		//       setLogMess(res.status);
-		//       return;
-		//    }
-		// });
+
 	};
 
 	if (isLogged) {

@@ -98,12 +98,7 @@ const CheckoutCartsWrapper = ({
 			}
 		);
 		getProductOnCart();
-		// .then((res) => {
-		// 	getProductOnCart();
-		// })
-		// .catch((err) => {
-		// 	console.log(err.message);
-		// });
+
 	};
 
 	return (
