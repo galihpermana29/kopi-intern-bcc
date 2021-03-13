@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import ClearIcon from '@material-ui/icons/Clear';
 import AlertDialog from './Alert';
+import CheckoutCartsWrapper from './CheckoutCartsWrapper';
 
 const ProductCartWrapper = styled.div`
 	padding: 1rem;
@@ -91,65 +92,83 @@ const TotalWrapper = styled.div`
 	}
 `;
 
-const ProductCartsWrapper = ({dataProduct, handleAlertClose, handleClickAlertOpen, setAlertProdId, openAlert}) => {
-   let total = 0;
-	return (
-		<ProductCartWrapper>
-			<h2>Product Forms</h2>
-			<CartForm>
-				{dataProduct.map(
-					({
-						id,
-						id_product,
-						id_user,
-						product_name,
-						product_img,
-						product_price,
-						quantity,
-					}) => (
-						<ProductWrapper key={id}>
-							<ImgTitleWrapper>
-								<ImgProd
-									src={`${process.env.PUBLIC_URL}/assets/${product_img}.jpg`}
-									alt=""
-									width="100%"
-								/>
-								<NameProd>{product_name}</NameProd>
-							</ImgTitleWrapper>
-							<QuantityInput
-								type="number"
-								name="quantity"
-								id="quantity"
-								value={quantity}
-								disabled
-							/>
-							<ClosePriceWrapper>
-								<DeleteIcon
-									onClick={() => {
-										handleClickAlertOpen();
-										setAlertProdId(id_product);
-									}}
-								/>
-								<PriceProd>{product_price * quantity}</PriceProd>
-							</ClosePriceWrapper>
-						</ProductWrapper>
-					)
-				)}
+const ProductCartsWrapper = ({
+	dataProduct,
+	handleAlertClose,
+	handleClickAlertOpen,
+	setAlertProdId,
+	openAlert,
+	userInfo,
+   getProductOnCart,
+}) => {
+   
+	let total = 0;
 
-				<TotalWrapper>
-					{dataProduct.forEach((data) => {
-						total = total + data.product_price * data.quantity;
-					})}
-					<p>Total :</p>
-					<h3>{total}</h3>
-				</TotalWrapper>
-			</CartForm>
-			<AlertDialog
-				handleClickAlertOpen={handleClickAlertOpen}
-				handleAlertClose={handleAlertClose}
-				openAlert={openAlert}
+	return (
+		<>
+			<ProductCartWrapper>
+				<h2>Product Forms</h2>
+				<CartForm>
+					{dataProduct.map(
+						({
+							id,
+							id_product,
+							id_user,
+							product_name,
+							product_img,
+							product_price,
+							quantity,
+						}) => (
+							<ProductWrapper key={id_product}>
+								<ImgTitleWrapper>
+									<ImgProd
+										src={`${process.env.PUBLIC_URL}/assets/${product_img}.jpg`}
+										alt=""
+										width="100%"
+									/>
+									<NameProd>{product_name}</NameProd>
+								</ImgTitleWrapper>
+								<QuantityInput
+									type="number"
+									name="quantity"
+									id="quantity"
+									value={quantity}
+									disabled
+								/>
+								<ClosePriceWrapper>
+									<DeleteIcon
+										onClick={() => {
+											handleClickAlertOpen();
+											setAlertProdId(id_product);
+										}}
+									/>
+									<PriceProd>{product_price * quantity}</PriceProd>
+								</ClosePriceWrapper>
+							</ProductWrapper>
+						)
+					)}
+
+					<TotalWrapper>
+						{dataProduct.forEach((data) => {
+							total = total + data.product_price * data.quantity;
+						})}
+						<p>Total :</p>
+						<h3>{total}</h3>
+					</TotalWrapper>
+				</CartForm>
+				<AlertDialog
+					handleClickAlertOpen={handleClickAlertOpen}
+					handleAlertClose={handleAlertClose}
+					openAlert={openAlert}
+				/>
+			</ProductCartWrapper>
+			<CheckoutCartsWrapper
+				userInfo={userInfo}
+				dataProduct={dataProduct}
+				total={total}
+				getProductOnCart={getProductOnCart}
 			/>
-		</ProductCartWrapper>
+		</>
 	);
 };
 

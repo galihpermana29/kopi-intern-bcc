@@ -4,8 +4,9 @@ import kopi from '../api/kopi';
 import { getId } from '../api/userId';
 import { useAuth } from '../config/Auth';
 import ProductCartsWrapper from './ProductCartsWrapper';
-import CheckoutCartsWrapper from './CheckoutCartsWrapper';
 import EmptyCartsWrapper from './EmptyCartWrapper';
+import { setCount } from '../api/getCountCart';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const CartWrapper = styled.div`
 	align-items: center;
@@ -15,10 +16,8 @@ const CartWrapper = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	height: 100%;
-	/* border: 1px solid red; */
 	width: 100%;
 `;
-
 
 const ProductCart = () => {
 	const IdUser = getId();
@@ -27,79 +26,85 @@ const ProductCart = () => {
 	const [openAlert, setOpenAlert] = useState(false);
 	const [alertProdId, setAlertProdId] = useState();
 	const [userInfo, setUserInfo] = useState();
+	const [isPending, setIsPending] = useState(true);
 
 	const handleClickAlertOpen = (e) => {
 		setOpenAlert(true);
 	};
 
-	const handleAlertClose = (e) => {
+	const handleAlertClose = async (e) => {
 		if (e.target.textContent === 'Iya') {
-			deleteProductOnCart(alertProdId);
+			await deleteProductOnCart(alertProdId);
+			await setCount(authTokens);
 		}
 		setOpenAlert(false);
 	};
 
 	const getProductOnCart = async () => {
-		await kopi
-			.get(`/api/carts/${IdUser}`, {
-				headers: {
-					Authorization: `Bearer ${authTokens}`,
-				},
-			})
-			.then((res) => {
-				if (res.data.message.length === 0) {
-					setDataProduct(null);
-				} else {
-					setDataProduct(res.data.message);
-				}
-			});
+		let dataGet = await kopi.get(`/api/carts/${IdUser}`, {
+			headers: {
+				Authorization: `Bearer ${authTokens}`,
+			},
+		});
+		if (dataGet.data.message.length === 0) {
+			setDataProduct(null);
+		} else {
+			setDataProduct(dataGet.data.message);
+		}
+		setIsPending(false);
 	};
 
 	const deleteProductOnCart = async (idProduct) => {
-		await kopi
-			.delete(`/api/carts/${idProduct}`, {
-				headers: {
-					Authorization: `Bearer ${authTokens}`,
-				},
-			})
-			.then((res) => {
-				getProductOnCart();
-			});
+		let dataDel = await kopi.delete(`/api/carts/${idProduct}`, {
+			headers: {
+				Authorization: `Bearer ${authTokens}`,
+			},
+		});
+		getProductOnCart();
 	};
 
 	const getUserInfo = async () => {
-		await kopi
-			.get(`/api/users/${IdUser}`, {
-				headers: {
-					Authorization: `Bearer ${authTokens}`,
-				},
-			})
-			.then((res) => {
-				setUserInfo(res.data.message);
-			});
+		let dataGet = await kopi.get(`/api/users/${IdUser}`, {
+			headers: {
+				Authorization: `Bearer ${authTokens}`,
+			},
+		});
+		setUserInfo(dataGet.data.message);
+		setIsPending(false);
 	};
 
 	useEffect(() => {
 		getProductOnCart();
 		getUserInfo();
-	}, [1]);
+	},);
 
 	return (
 		<CartWrapper>
 			{dataProduct !== null ? (
 				<>
-					<ProductCartsWrapper
-						dataProduct={dataProduct}
-						handleAlertClose={handleAlertClose}
-						handleClickAlertOpen={handleClickAlertOpen}
-						setAlertProdId={setAlertProdId}
-						openAlert={openAlert}
-					/>
-					<CheckoutCartsWrapper userInfo={userInfo} />
+					{isPending ? (
+						<CircularProgress style={{ color: '#ef962d' }} />
+					) : (
+						<>
+							<ProductCartsWrapper
+								dataProduct={dataProduct}
+								handleAlertClose={handleAlertClose}
+								handleClickAlertOpen={handleClickAlertOpen}
+								setAlertProdId={setAlertProdId}
+								openAlert={openAlert}
+								userInfo={userInfo}
+								getProductOnCart={getProductOnCart}
+							/>
+						</>
+					)}
 				</>
 			) : (
 				<>
-					<EmptyCartsWrapper/>
+					{isPending ? (
+						<CircularProgress style={{ color: '#ef962d' }} />
+					) : (
+						<EmptyCartsWrapper />
+					)}
 				</>
 			)}
 		</CartWrapper>

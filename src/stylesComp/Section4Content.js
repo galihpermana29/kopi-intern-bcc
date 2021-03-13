@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import Section2Content, {
-	Section2,
+import {
 	Container,
 	MainTitle,
 	SecondTitle,
@@ -23,8 +22,6 @@ const Wrapper = styled.div`
 		justify-content: center;
 		align-items: center;
 	}
-	/* text-align: center; */
-	/* border: 1px solid green; */
 	& > * {
 		margin-bottom: 2rem;
 	}
@@ -32,7 +29,6 @@ const Wrapper = styled.div`
 
 const TextandLogoWrapper = styled.div`
 	@media only screen and (min-width: 670px) {
-		/* border: 1px solid red; */
 		max-width: 80%;
 		display: flex;
 		align-items: center;
@@ -42,7 +38,6 @@ const TextandLogoWrapper = styled.div`
 `;
 
 const Logo = styled.img`
-	/* border: 1px solid green; */
 	margin-bottom: 2rem;
 	@media only screen and (min-width: 670px) {
 		margin-right: 4rem;

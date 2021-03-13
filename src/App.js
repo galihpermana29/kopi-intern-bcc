@@ -6,8 +6,11 @@ import Login from './pages/Login';
 import Signup from './pages/SignUp';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
+import Admin from './pages/Admin';
+import Invoice from './pages/Invoice';
 import PrivateRoute from './config/PrivateRoute';
 import { AuthContext } from './config/Auth';
+import Navbar from './stylesComp/Navbar';
 
 function App() {
 	const existingToken = JSON.parse(localStorage.getItem('tokens'));
@@ -17,29 +20,34 @@ function App() {
 		localStorage.setItem('tokens', JSON.stringify(data));
 		setAuthTokens(data);
 	};
+
 	return (
 		<AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
 			<Router>
 				<GlobalStyle />
 				<div>
 					<Switch>
-						{/* <Route exact path="/">
-						<Home slides={SliderData} />
-					</Route> */}
+						<Route path="/login" component={Login} />
+						<Route path="/signup" component={Signup} />
 						{authTokens ? (
 							<>
-								<PrivateRoute exact path="/" component={Home} />
-								<Route path="/login" component={Login} />
-								<Route path="/signup" component={Signup} />
-								<PrivateRoute path="/cart" component={Cart} />
+								<Navbar />
+								<Switch>
+									<PrivateRoute exact path="/" component={Home} />
+									<PrivateRoute path="/cart" component={Cart} />
+									<PrivateRoute path="/invoice" component={Invoice} />
+									<PrivateRoute path="/admin" component={Admin} />
+								</Switch>
 							</>
 						) : (
 							<>
-								<Route exact path="/" component={Home} />
-                        {/* <PrivateRoute exact path="/" component={Home} /> */}
-								<Route path="/login" component={Login} />
-								<Route path="/signup" component={Signup} />
-								<PrivateRoute path="/cart" component={Cart} />
+								<Navbar />
+								<Switch>
+									<Route exact path="/" component={Home} />
+									<PrivateRoute path="/cart" component={Cart} />
+                           <PrivateRoute path="/invoice" component={Invoice} />
+                           <Route path="/admin" component={Admin} />
+								</Switch>
 							</>
 						)}
 					</Switch>

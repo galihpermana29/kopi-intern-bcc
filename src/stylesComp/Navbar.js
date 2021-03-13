@@ -1,10 +1,9 @@
 import { React, useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { makeStyles } from '@material-ui/core/styles';
 import { Link, Redirect } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import logo from '../img/logo.png';
+import logoText from '../img/logoText.png';
 import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
@@ -22,50 +21,72 @@ const NavbarWrapper2 = styled.div`
 	justify-content: flex-end;
 	width: 100%;
 	align-items: center;
-	/* border: 1px solid red; */
-
 	@media only screen and (min-width: 670px) {
 		justify-content: space-between;
 	}
 `;
 
 const LogoImg = styled.img`
-	width: 40px;
+	width: 100px;
 `;
 
 const NavbarLink = styled.a`
 	text-decoration: none;
 	color: #000;
-	padding: 0.2rem 0.2rem;
+	padding: 0.7rem 0.2rem;
 	transition: 0.2s ease-in-out all;
-	/* border-radius: 0.3rem;  */
 	border-bottom: 2px solid #fff;
 	font-weight: 400;
+	border: 2px solid transparent;
 	cursor: pointer;
+	@media only screen and (min-width: 670px) {
+		padding: 0.2rem 0.2rem;
+	}
+
 	&:hover {
-		/* background-color: #ef962d; */
 		color: #ef962d;
 		border-bottom: 2px solid #ef962d;
 	}
 `;
 
 const NavbarLinkWrapper = styled.div`
-	margin-left: 7rem;
-	/* display: flex; */
-	width: 270px;
-	justify-content: space-between;
-	display: none;
-	/* visibility: hidden; */
+	display: flex;
+	flex-direction: column;
+	width: 80%;
+	height: 100vh;
+	position: absolute;
+	top: 50px;
+	left: ${({ click }) => (click ? 0 : '-100%')};
+	opacity: 1;
+	transition: all 0.5s ease;
+	background: #fff;
 
 	@media only screen and (min-width: 670px) {
+		margin-left: 7rem;
+		position: static;
+		height: inherit;
+		flex-direction: inherit;
+	}
+`;
+
+const NavItem = styled.div`
+	display: flex;
+	flex-direction: column;
+	height: 300px;
+	justify-content: space-around;
+	text-align: center;
+
+	@media only screen and (min-width: 670px) {
+		width: 270px;
+		justify-content: space-between;
 		display: flex;
-		/* visibility: visible; */
+		flex-direction: inherit;
+		height: inherit;
 	}
 `;
 
 const NavbarIconWrapper = styled.div`
 	width: 100%;
-	/* max-width: 130px; */
 	max-width: ${({ auth }) => (auth ? '130px' : '170px')};
 	display: flex;
 	justify-content: space-between;
@@ -84,7 +105,6 @@ const HamburgerIcon = styled(MenuIcon)`
 `;
 
 const ButtonOnNavbar = styled(Link)`
-	/* margin-right: 2rem; */
 	text-decoration: none;
 	color: #ef962d;
 	border: 1px solid #ef962d;
@@ -100,125 +120,134 @@ const ButtonOnNavbar = styled(Link)`
 	}
 `;
 
-// const useStyles = makeStyles((theme) => ({}));
-
-const Navbar = () => {
+const Navbar = ({ counts, setCounts }) => {
 	const { authTokens, setAuthTokens } = useAuth();
 	const [auth, setAuth] = useState(false);
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
+	const [click, setClick] = useState(false);
+
+	const handleClick = () => setClick(!click);
 
 	const handleLogout = () => {
 		setAuthTokens();
 		localStorage.clear();
 	};
 
+	const handleInvoice = () => {
+		<Redirect to="/invoice" />;
+	};
+
 	useEffect(() => {
 		if (!(authTokens === null)) {
 			setAuth(true);
 		}
-	});
+	},[]);
 
 	const handleMenu = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
 
 	const handleClose = () => {
-		<Redirect to="/login" />;
 		setAnchorEl(null);
 	};
 
-	// useStyles();
 
 	return (
-		<div>
-			<AppBar elevation={0} style={{backgroundColor: '#fff'}}>
-				<Toolbar>
-					<LogoImg src={logo} />
-					<NavbarWrapper2>
-						<NavbarLinkWrapper>
+		<AppBar elevation={0} style={{ backgroundColor: '#fff' }}>
+			<Toolbar>
+				<Link to={'/'}>
+					<LogoImg src={logoText} />
+				</Link>
+				<NavbarWrapper2>
+					<NavbarLinkWrapper click={click}>
+						<NavItem>
 							<NavbarLink href="/#home">Home</NavbarLink>
 							<NavbarLink href="/#produk">Produk</NavbarLink>
 							<NavbarLink href="/#galeri">Galeri</NavbarLink>
 							<NavbarLink href="/#about">Tentang</NavbarLink>
-						</NavbarLinkWrapper>
-						<NavbarIconWrapper auth={auth}>
-							{auth ? (
-								<div>
+						</NavItem>
+					</NavbarLinkWrapper>
+					<NavbarIconWrapper auth={auth}>
+						{auth ? (
+							<div>
+								<Link to={'/cart'}>
 									<IconButton aria-label="show 4 new mails">
-										<Badge badgeContent={2} color="secondary">
-											<Link to={'/cart'}>
-												<ShoppingCartIcon
-													style={{
-														fontSize: '2.5rem',
-														color: 'black',
-													}}
-												/>
-											</Link>
-										</Badge>
-									</IconButton>
-									<IconButton
-										aria-label="account of current user"
-										aria-controls="menu-appbar"
-										aria-haspopup="true"
-										onClick={handleMenu}
-										color="inherit"
-										style={{ color: 'black' }}
-									>
-										<AccountCircle style={{ fontSize: '2.5rem' }} />
-									</IconButton>
-									<Menu
-										id="menu-appbar"
-										anchorEl={anchorEl}
-										anchorOrigin={{
-											vertical: 'top',
-											horizontal: 'right',
-										}}
-										keepMounted
-										transformOrigin={{
-											vertical: 'top',
-											horizontal: 'right',
-										}}
-										open={open}
-										onClose={handleClose}
-									>
-										<MenuItem
-											style={{ fontSize: '1.5rem' }}
-											onClick={handleClose}
-										>
-											Profile
-										</MenuItem>
-										<MenuItem
-											style={{ fontSize: '1.5rem' }}
-											onClick={handleClose}
-										>
-											<Link
-												to="/login"
+										<Badge badgeContent={counts} color="secondary">
+											<ShoppingCartIcon
 												style={{
-													textDecoration: 'none',
+													fontSize: '2.5rem',
 													color: 'black',
 												}}
-												onClick={handleLogout}
-											>
-												Logout
-											</Link>
+											/>
+										</Badge>
+									</IconButton>
+								</Link>
+								<IconButton
+									aria-label="account of current user"
+									aria-controls="menu-appbar"
+									aria-haspopup="true"
+									onClick={handleMenu}
+									color="inherit"
+									style={{ color: 'black' }}
+								>
+									<AccountCircle style={{ fontSize: '2.5rem' }} />
+								</IconButton>
+								<Menu
+									id="menu-appbar"
+									anchorEl={anchorEl}
+									anchorOrigin={{
+										vertical: 'top',
+										horizontal: 'right',
+									}}
+									keepMounted
+									transformOrigin={{
+										vertical: 'top',
+										horizontal: 'right',
+									}}
+									open={open}
+									onClose={handleClose}
+								>
+									<Link to="/invoice"
+											style={{
+												textDecoration: 'none',
+												color: 'black',
+											}}>
+										<MenuItem
+											style={{ fontSize: '1.5rem' }}
+											onClick={handleClose}
+										>
+											Invoice
 										</MenuItem>
-									</Menu>
-								</div>
-							) : (
-								<div>
-									<ButtonOnNavbar to={'/login'}>Masuk</ButtonOnNavbar>
-									<ButtonOnNavbar to={'/signup'}>
-										Daftar
-									</ButtonOnNavbar>
-								</div>
-							)}
-							<HamburgerIcon />
-						</NavbarIconWrapper>
-					</NavbarWrapper2>
-				</Toolbar>
-			</AppBar>
-		</div>
+									</Link>
+									<MenuItem
+										style={{ fontSize: '1.5rem' }}
+										onClick={handleClose}
+									>
+										<Link
+											to="/login"
+											style={{
+												textDecoration: 'none',
+												color: 'black',
+											}}
+											onClick={handleLogout}
+										>
+											Logout
+										</Link>
+									</MenuItem>
+								</Menu>
+							</div>
+						) : (
+							<div>
+								<ButtonOnNavbar to={'/login'}>Masuk</ButtonOnNavbar>
+								<ButtonOnNavbar to={'/signup'}>Daftar</ButtonOnNavbar>
+							</div>
+						)}
+						<HamburgerIcon onClick={handleClick} />
+					</NavbarIconWrapper>
+				</NavbarWrapper2>
+			</Toolbar>
+		</AppBar>
 	);
 };
 

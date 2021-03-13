@@ -12,6 +12,7 @@ import kopi from '../api/kopi';
 import { getId } from '../api/userId';
 import { useAuth } from '../config/Auth';
 import NotificationCustom from './Notification';
+import { getCount, setCount } from '../api/getCountCart';
 
 const ModalImg = styled.img`
 	min-width: 100px;
@@ -94,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
 const ModalWrapper = ({ nama, img, desc, harga, id, open, handleClose }) => {
 	const classes = useStyles();
 	const IdUser = getId();
-	const { authTokens, setAuthTokens } = useAuth();
+	const { authTokens } = useAuth();
 	const [ProductName, setProductName] = useState(nama);
 	const [IdProduct, setIdProduct] = useState(id);
 	const [Quantity, setQuantity] = useState(0);
@@ -114,22 +115,19 @@ const ModalWrapper = ({ nama, img, desc, harga, id, open, handleClose }) => {
 	};
 
 	const getProductOnCarts = async (res) => {
-		await kopi
-			.get(`/api/carts/${IdUser}`, {
-				headers: {
-					Authorization: `Bearer ${authTokens}`,
-				},
-			})
-			.then((res) => {
-				setPCart(res.data.message);
-			});
+		let dataGet = await kopi.get(`/api/carts/${IdUser}`, {
+			headers: {
+				Authorization: `Bearer ${authTokens}`,
+			},
+		});
+		setPCart(dataGet.data.message);
 	};
 
 	const handleAddToCart = async (e) => {
 		if (pCart.length > 0) {
 			for (let i = 0; i < pCart.length; i++) {
-				if (pCart[i].product_name == ProductName) {
-					await validation(pCart[i].product_name == ProductName);
+				if (pCart[i].product_name === ProductName) {
+					await validation(pCart[i].product_name === ProductName);
 					return;
 				}
 			}
@@ -140,66 +138,58 @@ const ModalWrapper = ({ nama, img, desc, harga, id, open, handleClose }) => {
 			return;
 		}
 	};
-   
+
 	const validation = async (isProd) => {
 		if (Quantity === undefined || Quantity === NaN || Quantity <= 0) {
 			return;
 		} else {
 			if (isProd) {
-				await kopi
-					.put(
-						'/api/carts/',
-						{
-							idProduct: IdProduct,
-							quantity: Quantity,
-							idUser: IdUser,
+				let dataPut = await kopi.put(
+					'/api/carts/',
+					{
+						idProduct: IdProduct,
+						quantity: Quantity,
+						idUser: IdUser,
+					},
+					{
+						headers: {
+							Authorization: `Bearer ${authTokens}`,
 						},
-						{
-							headers: {
-								Authorization: `Bearer ${authTokens}`,
-							},
-						}
-					)
-					.then((res) => {
-						setNotifMessage('Produk berhasil diupdate');
-						showNotif();
-						handleClose();
-						setQuantity(0);
-					});
-
+					}
+				);
+				setNotifMessage('Produk berhasil diupdate');
+				showNotif();
+				handleClose();
+				setQuantity(0);
 				return;
 			} else {
-				await kopi
-					.post(
-						'/api/carts/',
-						{
-							productName: ProductName,
-							idProduct: IdProduct,
-							imgProduct: img,
-							priceProduct: harga,
-							idUser: IdUser,
-							quantity: Quantity,
+				let dataPost = await kopi.post(
+					'/api/carts/',
+					{
+						productName: ProductName,
+						idProduct: IdProduct,
+						imgProduct: img,
+						priceProduct: harga,
+						idUser: IdUser,
+						quantity: Quantity,
+					},
+					{
+						headers: {
+							Authorization: `Bearer ${authTokens}`,
 						},
-						{
-							headers: {
-								Authorization: `Bearer ${authTokens}`,
-							},
-						}
-					)
-					.then((res) => {
-						setNotifMessage('Produk berhasil ditambahkan ke keranjang');
-						showNotif();
-						handleClose();
-						setQuantity(0);
-					});
-
+					}
+				);
+				setNotifMessage('Produk berhasil ditambahkan ke keranjang');
+				showNotif();
+				handleClose();
+				setQuantity(0);
 				return;
 			}
 		}
 	};
 
 	useEffect(() => {
-		getProductOnCarts();
+		if (authTokens) getProductOnCarts();
 	}, [open]);
 
 	return (

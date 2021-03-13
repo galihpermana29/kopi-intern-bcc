@@ -1,12 +1,6 @@
 import React from 'react';
-import Navbar from '../stylesComp/Navbar';
 import { Footer } from '../stylesComp/Footer';
 import styled from 'styled-components';
-import { makeStyles } from '@material-ui/core/styles';
-import ClearIcon from '@material-ui/icons/Clear';
-import robusta from '../img/robusta.jpg';
-import TextField from '@material-ui/core/TextField';
-import { Input, MainButton } from '../stylesComp/LoginSign';
 import ProductCart from '../stylesComp/ProductCart';
 
 const CartContent = styled.div`
@@ -19,11 +13,8 @@ const CartContent = styled.div`
 `;
 
 const Cart = () => {
-	
-
 	return (
 		<>
-			<Navbar />
 			<CartContent>
             <ProductCart/>
 			</CartContent>

@@ -10,14 +10,12 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { SliderData } from '../stylesComp/SliderData';
 import section3bg from '../img/section3.png';
 import styled from 'styled-components';
-import { makeStyles } from '@material-ui/core/styles';
+
 
 export const Section3 = styled.div`
 	text-align: center;
-	/* min-height: 100vh; */
 	display: flex;
 	align-items: center;
-	/* border: 1px solid red; */
 	background: url(${section3bg}) no-repeat center;
 	background-size: 100% 100%;
 	object-fit: cover;
@@ -25,11 +23,9 @@ export const Section3 = styled.div`
 
 export const Slider = styled.div`
 	position: relative;
-	/* height: 100vh; */
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	/* border: 1px solid green; */
 	margin-top: 3rem;
 	margin-bottom: 3rem;
 	@media only screen and (min-width: 670px) {
@@ -61,11 +57,9 @@ export const ArrowForward = styled(ArrowForwardIosIcon)`
 `;
 
 export const ImageWrapper = styled.div`
-	/* border: 1px solid purple; */
 	width: 100%;
 	min-width: 200px;
 	max-width: 600px;
-	/* margin: 1rem auto; */
 `;
 
 export const ImageSlides = styled.div`
@@ -73,20 +67,14 @@ export const ImageSlides = styled.div`
 	transition-duration: 1s;
 	transform: ${({ index, current }) =>
 		index === current ? 'scale(1)' : 'inherit'};
-	/* @media only screen and (min-width: 670px) {
-      opacity: 1;
-   } */
 `;
 
 export const Image = styled.img`
 	width: 100%;
 `;
 
-const useStyles = makeStyles((theme) => ({}));
 
 const Section3Content = ({slides}) => {
-   const classes = useStyles();
-	// console.log(tes);
 	const [current, setCurrent] = useState(0);
 	const length = 5;
 
@@ -110,8 +98,7 @@ const Section3Content = ({slides}) => {
 					di Kebun Kopi Dampit
 				</MainTitle>
 				<SecondTitle style={{ color: 'white' }}>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem,
-					amet!
+					Foto-foto terbaik yang kami ambil dari kebun kopi tersebut
 				</SecondTitle>
 			</TextWrapper>
 			<Slider>

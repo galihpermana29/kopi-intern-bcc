@@ -9,7 +9,6 @@ export const Section1 = styled.div`
 `;
 
 export const JumbotronWrapper = styled.div`
-	/* border: 1px solid red; */
 	align-items: center;
 	justify-content: center;
 	margin: 0 auto;
@@ -17,7 +16,6 @@ export const JumbotronWrapper = styled.div`
 	display: flex;
 	width: 80%;
 	height: 85%;
-	/* flex-direction: column-reverse; */
 	flex-wrap: wrap;
 	@media only screen and (min-width: 670px) {
 		flex-direction: row;
@@ -105,11 +103,9 @@ export const JumbotronButton = styled(Link)`
 
 export const JumbotronImg = styled.img`
 	width: 100%;
-	/* height: 100%; */
 	max-width: 500px;
-	/* border: 1px solid green; */
 	margin: 0 auto;
-	/* object-fit: cover; */
+
 `;
 
 const Jumbotron = () => {

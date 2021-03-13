@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import ClearIcon from '@material-ui/icons/Clear';
+import kopi from '../api/kopi';
+import { getId } from '../api/userId';
+import { useAuth } from '../config/Auth';
 import TextField from '@material-ui/core/TextField';
-import {  MainButton } from '../stylesComp/LoginSign';
+import { MainButton } from '../stylesComp/LoginSign';
 
 const CheckoutForm = styled.form`
 	width: 100%;
@@ -50,13 +52,65 @@ const AddressInput = styled(TextField).attrs(() => ({
 	}
 `;
 
+const getDateNow = () => {
+	let dateObj = new Date();
+	let month = dateObj.getUTCMonth() + 1;
+	let day = dateObj.getUTCDate();
+	let year = dateObj.getUTCFullYear();
+	return `${year}-${month}-${day}`;
+};
 
-const CheckoutCartsWrapper = ({userInfo}) => {
+const getTimeNow = () => {
+	let dateObj = new Date();
+	let hours = dateObj.getHours();
+	let minutes = dateObj.getMinutes();
+	let seconds = dateObj.getSeconds();
+	return `${hours}:${minutes}:${seconds}`;
+};
+
+const CheckoutCartsWrapper = ({
+	userInfo,
+	dataProduct,
+	total,
+	getProductOnCart,
+}) => {
+	const IdUser = getId();
+	const { authTokens } = useAuth();
+	const [dataN, setDataN] = useState(dataProduct);
+	let newDate = getDateNow();
+	let newTime = getTimeNow();
+	let date = `${newDate} ${newTime}`;
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		let dataPost = await kopi.post(
+			`/api/transactions/`,
+			{
+				date: `${date} `,
+				totalPrice: total,
+				idUser: IdUser,
+				detail: dataN,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${authTokens}`,
+				},
+			}
+		);
+		getProductOnCart();
+		// .then((res) => {
+		// 	getProductOnCart();
+		// })
+		// .catch((err) => {
+		// 	console.log(err.message);
+		// });
+	};
+
 	return (
 		<ChekoutWrapper>
 			<h2>Checkout Forms</h2>
 			{userInfo && (
-				<CheckoutForm>
+				<CheckoutForm onSubmit={(e) => handleSubmit(e)}>
 					<AddressInput id="standard-basic" label="Alamat Pengiriman" />
 					<AddressInput
 						id="standard-read-only-input"

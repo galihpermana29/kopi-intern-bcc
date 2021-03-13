@@ -78,8 +78,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const CardProd = ({ nama, img, desc, harga, id }) => {
-   console.log(nama, img, desc, harga, id)
+const CardProd = ({ nama, img, desc, harga, id, counts, setCounts }) => {
 	const { authTokens } = useAuth();
 	const history = useHistory();
 	const [open, setOpen] = useState(false);
@@ -130,6 +129,7 @@ const CardProd = ({ nama, img, desc, harga, id }) => {
 				id={id}
 				open={open}
 				handleClose={handleClose}
+            counts={counts} setCounts={setCounts}
 			/>
 		</>
 	);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import {Redirect } from 'react-router-dom';
 import imgLog from '../img/log.png';
 import {
 	Wrapper,
@@ -21,23 +21,46 @@ const Login = () => {
 	const [Email, setEmail] = useState('');
 	const [Password, setPassword] = useState('');
 	const { setAuthTokens } = useAuth();
-	const [isLogged, setIsLogged] = useState(false);
+	const [isLogged, setIsLogged] = useState();
+	const [logMess, setLogMess] = useState();
+	const [role, setRole] = useState();
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
-		await kopi
-			.post('/api/users/signin', {
-				email: Email,
-				password: Password,
-			})
-			.then((res) => {
-				storeId(res);
-				res.status === 200 && setAuthTokens(res.data.message.token);
-				setIsLogged(true);
-			});
+		let dataRes = await kopi.post('/api/users/signin', {
+			email: Email,
+			password: Password,
+		});
+		storeId(dataRes);
+		if (dataRes.status === 200) {
+			setAuthTokens(dataRes.data.message.token);
+			setIsLogged(true);
+			setRole(dataRes.data.message.role);
+			return;
+		} else {
+			setIsLogged(false);
+			setLogMess(dataRes.status);
+			return;
+		}
+		// .then((res) => {
+		// 	storeId(res);
+		// 	if (res.status === 200) {
+		// 		setAuthTokens(res.data.message.token);
+		// 		setIsLogged(true);
+		//       setRole(res.data.message.role);
+		//       return;
+		// 	} else {
+		//       setIsLogged(false);
+		//       setLogMess(res.status);
+		//       return;
+		//    }
+		// });
 	};
 
 	if (isLogged) {
+		if (role === 1) {
+			return <Redirect to={'/admin'} />;
+		}
 		return <Redirect to={'/'} />;
 	}
 
@@ -67,6 +90,7 @@ const Login = () => {
 							required
 							onChange={(e) => setPassword(e.target.value)}
 						/>
+						<p>Email atau password salah</p>
 						<p>Lupa Password?</p>
 						<MainButton style={{ marginTop: '2rem' }} type="submit">
 							Masuk

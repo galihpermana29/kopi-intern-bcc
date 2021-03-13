@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import imgLog from '../img/log.png';
 import {
 	Wrapper,
@@ -27,27 +27,20 @@ const Login = () => {
 
 	const handleSignup = async (e) => {
 		e.preventDefault();
-		await kopi
-			.post('/api/users', {
-				name: Name,
-				email: Email,
-				password: Password,
-				phone: Phone,
-            role: 2
-			})
-			.then((res) => {
-				console.log(res);
-			});
-		await kopi
-			.post('/api/users/signin', {
-				email: Email,
-				password: Password,
-			})
-			.then((res) => {
-            storeId(res)
-				res.status === 200 && setAuthTokens(res.data.message.token);
-				setIsLogged(true);
-			});
+		let dataSign = await kopi.post('/api/users', {
+			name: Name,
+			email: Email,
+			password: Password,
+			phone: Phone,
+			role: 2,
+		});
+		let dataLogin = await kopi.post('/api/users/signin', {
+			email: Email,
+			password: Password,
+		});
+		storeId(dataLogin);
+		dataLogin.status === 200 && setAuthTokens(dataLogin.data.message.token);
+		setIsLogged(true);
 	};
 
 	if (isLogged) {

@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import robusta from '../img/robusta.jpg';
-import excelsa from '../img/excelsa.jpg';
-import arabica from '../img/arabika.jpg';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import CardProd from '../stylesComp/Card';
 import styled from 'styled-components';
-import { makeStyles } from '@material-ui/core/styles';
-import { ProdukData } from './ProdukData';
 import kopi from '../api/kopi';
-// import arabica from '../img/arabika.jpg';
 
 export const Section2 = styled.div`
 	text-align: center;
 	min-height: 100vh;
 	display: flex;
 	align-items: center;
-	/* border: 1px solid green; */
 	@media only screen and (min-width: 670px) {
 	}
 `;
@@ -24,7 +18,6 @@ export const CardsWrapper = styled.div`
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
-	/* border: 1px solid red; */
 	& > * {
 		margin-top: 2rem;
 	}
@@ -45,7 +38,6 @@ export const Container = styled.div`
 `;
 
 export const TextWrapper = styled.div`
-	/* text-align: center; */
 	margin-top: 3rem;
 	@media only screen and (min-width: 670px) {
 		margin-top: 5rem;
@@ -56,7 +48,6 @@ export const TextWrapper = styled.div`
 
 export const MainTitle = styled.h2`
 	font-size: 2.2rem;
-	/* margin-bottom: 5rem; */
 	text-align: center;
 	margin: 1rem auto;
 	@media only screen and (min-width: 670px) {
@@ -74,27 +65,16 @@ export const SecondTitle = styled.p`
 	}
 `;
 
-export const useStyles = makeStyles({
-	root: {
-		maxWidth: 345,
-	},
-	media: {
-		margin: '0 auto',
-		width: '50%',
-		height: 140,
-		objectFit: 'cover',
-	},
-});
-
 const Section2Content = () => {
-	const classes = useStyles();
-   const [produk, setProduk] = useState();
+	const [produk, setProduk] = useState();
+	const [isPending, setIsPending] = useState(true);
+
 	const getProductData = async () => {
-		await kopi.get('/api/products').then((res) => {
-         setProduk(res.data.message)
-         console.log(res.data.message[0].product_img)
-		});
+		let dataGet = await kopi.get('/api/products');
+		setProduk(dataGet.data.message);
+		setIsPending(false);
 	};
+
 	useEffect(() => {
 		getProductData();
 	}, []);
@@ -111,18 +91,28 @@ const Section2Content = () => {
 				</SecondTitle>
 			</TextWrapper>
 			<CardsWrapper>
-				{produk && produk.map(({ id_product, product_name, product_price, product_img, product_desc }) => {
-					return (
-						<CardProd
-							nama={product_name}
-							img={product_img}
-							desc={product_desc}
-							harga={product_price}
-                     id={id_product}
-							key={id_product}
-						/>
-					);
-				})}
+				{isPending && <CircularProgress style={{ color: '#ef962d' }} />}
+				{produk &&
+					produk.map(
+						({
+							id_product,
+							product_name,
+							product_price,
+							product_img,
+							product_desc,
+						}) => {
+							return (
+								<CardProd
+									nama={product_name}
+									img={product_img}
+									desc={product_desc}
+									harga={product_price}
+									id={id_product}
+									key={id_product}
+								/>
+							);
+						}
+					)}
 			</CardsWrapper>
 		</Container>
 	);

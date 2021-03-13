@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import { makeStyles } from '@material-ui/core/styles';
+
 
 
 const NotifWrapper = styled(MuiAlert)`
@@ -14,18 +14,7 @@ const NotifWrapper = styled(MuiAlert)`
    align-items: center;
 `;
 
-// const useStyles = makeStyles((theme) => ({
-// 	rootNotif: {
-// 		width: '100%',
-// 		'& > * + *': {
-// 			marginTop: theme.spacing(2),
-// 		},
-// 		fontSize: '1.3rem',
-// 	},
-// }));
-
 const Notification = ({ openNotif, showNotif, closeNotif, message }) => {
-
 
 	return (
 		<div>
