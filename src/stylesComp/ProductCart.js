@@ -76,7 +76,7 @@ const ProductCart = () => {
 	useEffect(() => {
 		getProductOnCart();
 		getUserInfo();
-	},);
+	},[]);
 
 	return (
 		<CartWrapper>
