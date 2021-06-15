@@ -69,10 +69,18 @@ const Section2Content = () => {
 	const [produk, setProduk] = useState();
 	const [isPending, setIsPending] = useState(true);
 
+
 	const getProductData = async () => {
-		let dataGet = await kopi.get('/api/products');
-		setProduk(dataGet.data.message);
-		setIsPending(false);
+		try {
+         let dataGet = await fetch('docs.json')
+         let data = await dataGet.json();
+			// let dataGet = await kopi.get('/api/products');
+			// setProduk(dataGet.data.message);
+         setProduk(data)
+			setIsPending(false);
+		} catch (err) {
+			console.log(err.message);
+		}
 	};
 
 	useEffect(() => {
@@ -85,10 +93,7 @@ const Section2Content = () => {
 				<MainTitle>
 					Produk Kami <br /> dengan Kualitas Terbaik{' '}
 				</MainTitle>
-				<SecondTitle>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit,
-					expedita.
-				</SecondTitle>
+				<SecondTitle>Inilah produk-produk kami.</SecondTitle>
 			</TextWrapper>
 			<CardsWrapper>
 				{isPending && <CircularProgress style={{ color: '#ef962d' }} />}

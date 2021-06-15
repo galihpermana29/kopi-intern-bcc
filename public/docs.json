@@ -1,0 +1,23 @@
+[
+   {
+       "id_product": 1,
+       "product_name": "Arabica",
+       "product_price": 20000,
+       "product_img": "arabica",
+       "product_desc": "Arabika punya lebih banyak (rasa) citrus, dan rasa kopi ini agak asam, kopi ini banyak digemari sekarang ini."
+   },
+   {
+       "id_product": 2,
+       "product_name": "Robusta",
+       "product_price": 27000,
+       "product_img": "robusta",
+       "product_desc": "Robusta memiliki citarasa pahit. Rasanya sangat simpel dan ini hanyalah kopi punya aroma tegas."
+   },
+   {
+       "id_product": 3,
+       "product_name": "Excelsa",
+       "product_price": 22000,
+       "product_img": "excelsa",
+       "product_desc": "Kopi Excelsa mempunyai citarasa dan aroma yang dikategorikan kuat dan dominan pahit "
+   }
+]
